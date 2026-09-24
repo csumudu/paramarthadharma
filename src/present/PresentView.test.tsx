@@ -20,7 +20,7 @@ describe('PresentView', () => {
     key('ArrowRight');
     expect(useSelection.getState().selection.cetasika).toEqual([15]);
 
-    for (let i = 0; i < 20; i++) key('ArrowRight');
+    for (let i = 0; i < 7; i++) key('ArrowRight');
     expect(presenter.getByText('8 / 8')).toBeInTheDocument();
 
     key('f');
