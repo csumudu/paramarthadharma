@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Abhaya_Libre, Noto_Sans_Sinhala } from 'next/font/google';
+import { AppShell } from '@/components/shell/AppShell';
 import './globals.css';
 
 const noto = Noto_Sans_Sinhala({
@@ -23,7 +24,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="si">
-      <body className={`${noto.variable} ${abhaya.variable} antialiased`}>{children}</body>
+      <body className={`${noto.variable} ${abhaya.variable} antialiased`}>
+        <AppShell>{children}</AppShell>
+      </body>
     </html>
   );
 }
