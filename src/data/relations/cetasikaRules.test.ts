@@ -65,6 +65,9 @@ describe('CETASIKA_RELS', () => {
     expect(kindOf(31, 47)).toBe('aniyata'); // virati in kāma kusala
     expect(kindOf(82, 47)).toBe('niyata'); // virati in magga
     expect(kindOf(55, 50)).toBe('aniyata'); // karuṇā
+    expect(kindOf(82, 8)).toBe('aniyata'); // vitakka in magga (89 scheme: any jhāna)
+    expect(kindOf(89, 12)).toBe('aniyata'); // pīti in phala
+    expect(kindOf(55, 8)).toBe('niyata'); // vitakka in rūpa first jhāna stays niyata
   });
 
   it('never puts akusala cetasikas in sobhana cittas', () => {

@@ -24,14 +24,26 @@ const aniyata = () => 'aniyata' as const;
 const RULES: Rule[] = [
   // අඤ්ඤසමාන
   { cetasikas: range(1, 7), applies: () => true },
-  { cetasikas: [8], applies: (c) => (isKama(c) ? !DVIPANCA.has(c.id) : c.jhana === 1) },
-  { cetasikas: [9], applies: (c) => (isKama(c) ? !DVIPANCA.has(c.id) : jhanaAtMost(c, 2)) },
+  {
+    cetasikas: [8],
+    applies: (c) => (isKama(c) ? !DVIPANCA.has(c.id) : c.jhana === 1),
+    kind: (c) => (c.sphere === 'lokuttara' ? 'aniyata' : 'niyata'),
+  },
+  {
+    cetasikas: [9],
+    applies: (c) => (isKama(c) ? !DVIPANCA.has(c.id) : jhanaAtMost(c, 2)),
+    kind: (c) => (c.sphere === 'lokuttara' ? 'aniyata' : 'niyata'),
+  },
   { cetasikas: [10], applies: (c) => !DVIPANCA.has(c.id) && c.sampayutta !== 'vicikiccha' },
   {
     cetasikas: [11],
     applies: (c) => !DVIPANCA.has(c.id) && !SAMPATICCHANA_OR_PANCADVARAVAJJANA.has(c.id) && !SANTIRANA.has(c.id),
   },
-  { cetasikas: [12], applies: (c) => (isKama(c) ? c.vedana === 'somanassa' : jhanaAtMost(c, 3)) },
+  {
+    cetasikas: [12],
+    applies: (c) => (isKama(c) ? c.vedana === 'somanassa' : jhanaAtMost(c, 3)),
+    kind: (c) => (c.sphere === 'lokuttara' ? 'aniyata' : 'niyata'),
+  },
   { cetasikas: [13], applies: (c) => c.hetu !== 'ahetuka' && c.group !== 'mohamula' },
   // අකුසල
   { cetasikas: range(14, 17), applies: (c) => c.jati === 'akusala' },
