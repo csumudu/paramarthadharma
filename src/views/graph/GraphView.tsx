@@ -5,7 +5,7 @@ import '@xyflow/react/dist/style.css';
 import { useMemo, useState } from 'react';
 import { useMediaQuery } from '@/components/hooks';
 import { useSelection } from '@/state/selection';
-import { ALL_KINDS, buildGraph, focusFromSelection, type GraphNode, type RelKind } from './buildGraph';
+import { ALL_KINDS, buildGraph, focusFromSelection, type Focus, type GraphNode, type RelKind } from './buildGraph';
 
 const KIND_LABELS: Record<RelKind, string> = {
   cetasika: 'චෛතසික',
@@ -15,9 +15,11 @@ const KIND_LABELS: Record<RelKind, string> = {
   bhumi: 'භූමි',
 };
 const DARK_TEXT = new Set(['ahetuka', 'lokuttara', 'band-sobhana']);
+/** Tones whose fill is too light for white text (WCAG contrast); rendered with `--color-bg` instead. */
+const LIGHT_FILL = new Set(['fg', 'muted']);
 
-function nodeStyle(n: GraphNode) {
-  const color = n.tone === 'fg' ? 'var(--color-bg)' : DARK_TEXT.has(n.tone) ? '#111' : '#fff';
+export function nodeStyle(n: GraphNode) {
+  const color = LIGHT_FILL.has(n.tone) ? 'var(--color-bg)' : DARK_TEXT.has(n.tone) ? '#111' : '#fff';
   return {
     background: `var(--color-${n.tone})`,
     color,
@@ -28,24 +30,50 @@ function nodeStyle(n: GraphNode) {
 }
 
 export function GraphView() {
-  const selection = useSelection((s) => s.selection);
   const isPhone = useMediaQuery('(max-width: 767px)');
+  // Keyed by viewport only: `kinds` is scoped to the viewport (per the brief), so it must
+  // survive a focus change and reset only when the phone/desktop breakpoint itself changes.
+  // Lazy useState (in GraphKindsScope) avoids writing that default from an effect, which
+  // react-hooks/set-state-in-effect flags.
+  return <GraphKindsScope key={String(isPhone)} isPhone={isPhone} />;
+}
+
+function GraphKindsScope({ isPhone }: { isPhone: boolean }) {
+  const selection = useSelection((s) => s.selection);
   const focus = focusFromSelection(selection);
   const focusKey = `${focus.kind}:${focus.id}`;
+  const [kinds, setKinds] = useState<RelKind[]>(() => (isPhone ? ['cetasika', 'kicca'] : ALL_KINDS));
+  const toggleKind = (k: RelKind) =>
+    setKinds((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : ALL_KINDS.filter((x) => x === k || prev.includes(x))));
 
   return (
-    // Keyed by focus + viewport so a focus change or breakpoint crossing remounts the inner
-    // component with fresh defaults (via useState's initializer) instead of writing `kinds`/
-    // `expanded` state from an effect — which react-hooks/set-state-in-effect flags. User
-    // toggles (plain setState in click handlers below) still work between remounts. Follows
-    // the same precedent as MatrixView's `key={viewport}` remount.
-    <GraphInner key={`${focusKey}|${isPhone}`} focus={focus} focusKey={focusKey} isPhone={isPhone} />
+    // Keyed by focus only: `expanded` (owned by GraphInner) resets whenever the focus changes,
+    // independently of `kinds` above (owned by this layer, keyed by viewport instead).
+    <GraphInner
+      key={focusKey}
+      focus={focus}
+      focusKey={focusKey}
+      isPhone={isPhone}
+      kinds={kinds}
+      toggleKind={toggleKind}
+    />
   );
 }
 
-function GraphInner({ focus, focusKey, isPhone }: { focus: ReturnType<typeof focusFromSelection>; focusKey: string; isPhone: boolean }) {
+function GraphInner({
+  focus,
+  focusKey,
+  isPhone,
+  kinds,
+  toggleKind,
+}: {
+  focus: Focus;
+  focusKey: string;
+  isPhone: boolean;
+  kinds: RelKind[];
+  toggleKind: (k: RelKind) => void;
+}) {
   const select = useSelection((s) => s.select);
-  const [kinds, setKinds] = useState<RelKind[]>(() => (isPhone ? ['cetasika', 'kicca'] : ALL_KINDS));
   const [expanded, setExpanded] = useState<string[]>([]);
 
   const graph = useMemo(
@@ -75,8 +103,6 @@ function GraphInner({ focus, focusKey, isPhone }: { focus: ReturnType<typeof foc
   };
   const toggleGroup = (key: string) =>
     setExpanded((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
-  const toggleKind = (k: RelKind) =>
-    setKinds((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : ALL_KINDS.filter((x) => x === k || prev.includes(x))));
 
   return (
     <div className="space-y-2">
