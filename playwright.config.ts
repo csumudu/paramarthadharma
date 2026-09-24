@@ -5,7 +5,7 @@ export default defineConfig({
   outputDir: 'e2e-results',
   use: { baseURL: 'http://localhost:3100', launchOptions: { channel: 'chromium' } },
   webServer: {
-    command: 'npm run build && npx serve out -l 3100',
+    command: 'pnpm build && pnpm exec serve out -l 3100',
     url: 'http://localhost:3100',
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,
