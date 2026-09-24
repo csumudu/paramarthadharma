@@ -50,7 +50,7 @@ export function MatrixView() {
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-2">
+      <div role="toolbar" aria-label="මෙවලම් තීරුව" className="flex flex-wrap items-center gap-2">
         <button type="button" className={BTN} aria-pressed={review} onClick={() => setReview((r) => !r)}>
           සමාලෝචන ප්‍රකාරය
         </button>
