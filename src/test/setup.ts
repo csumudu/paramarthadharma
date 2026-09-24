@@ -2,6 +2,8 @@ import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 import React from 'react';
 import { afterEach, vi } from 'vitest';
+import { emptySelection } from '@/data';
+import { useSelection } from '@/state/selection';
 
 class ResizeObserverStub {
   observe() {}
@@ -45,4 +47,5 @@ vi.mock('next/link', () => ({
 
 afterEach(() => {
   cleanup();
+  useSelection.setState({ selection: emptySelection(), notice: null });
 });
