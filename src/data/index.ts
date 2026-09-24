@@ -128,6 +128,7 @@ export function profileOf(cittaId: number): CittaProfile {
   return p;
 }
 
+/** Read-only: returns the internal reverse-index Set for (kind, id). Do not mutate the result. */
 export function cittasFor(kind: FilterKind, id: EntityId): Set<number> {
   return reverse[kind].get(String(id)) ?? new Set();
 }
@@ -143,7 +144,9 @@ export function cittasMatching(sel: Selection): Set<number> | null {
   const filters = activeFilters(sel);
   if (filters.length === 0) return null;
   const sets = filters.map(({ kind, id }) => cittasFor(kind, id));
-  return sets.slice(1).reduce<Set<number>>((acc, set) => new Set([...acc].filter((c) => set.has(c))), sets[0]);
+  return sets
+    .slice(1)
+    .reduce<Set<number>>((acc, set) => new Set([...acc].filter((c) => set.has(c))), new Set(sets[0]));
 }
 
 export const KIND_LABELS: Record<EntityKind, string> = {

@@ -53,6 +53,12 @@ describe('cittasFor / cittasMatching', () => {
   it('accepts string ids for numeric kinds', () => {
     expect(cittasFor('cetasika', '12').size).toBe(35);
   });
+
+  it('returns a fresh set that does not alias the index', () => {
+    const matched = cittasMatching(sel({ cetasika: [12] }))!;
+    matched.clear();
+    expect(cittasFor('cetasika', 12).size).toBe(35);
+  });
 });
 
 describe('selection helpers', () => {
