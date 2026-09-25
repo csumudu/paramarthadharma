@@ -1,6 +1,6 @@
 import { BHUMIS, bhumiById } from './entities/bhumis';
 import { BAND_LABELS, CETASIKAS, SUBGROUP_LABELS, cetasikaById } from './entities/cetasikas';
-import { CITTAS, cittaById } from './entities/cittas';
+import { CITTAS, JATI_LABELS, VEDANA_LABELS, cittaById } from './entities/cittas';
 import { CATEGORY_LABELS, GROUPS, SPHERES, SPHERE_LABELS, groupById } from './entities/groups';
 import { KICCAS, kiccaById } from './entities/kiccas';
 import { PS_LINKS, STANDARD_CHAIN, psLabel, psLinkById } from './entities/psLinks';
@@ -32,6 +32,7 @@ export {
   CETASIKA_RELS,
   CITTAS,
   GROUPS,
+  JATI_LABELS,
   KICCAS,
   KICCA_RELS,
   PS_LINKS,
@@ -42,6 +43,7 @@ export {
   SPHERE_LABELS,
   STANDARD_CHAIN,
   SUBGROUP_LABELS,
+  VEDANA_LABELS,
   bhumiById,
   cetasikaById,
   cittaById,

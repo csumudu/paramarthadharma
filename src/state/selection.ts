@@ -22,6 +22,8 @@ interface SelectionStore {
   select: (kind: EntityKind, id: EntityId, additive?: boolean) => void;
   set: (selection: Selection) => void;
   clear: () => void;
+  /** Empties every filter kind (cetasika/kicca/psLink/puggala/bhumi) but keeps the citta selection. */
+  clearFilters: () => void;
   dismissNotice: () => void;
 }
 
@@ -31,5 +33,9 @@ export const useSelection = create<SelectionStore>((set) => ({
   select: (kind, id, additive = false) => set((s) => ({ selection: applySelect(s.selection, kind, id, additive) })),
   set: (selection) => set({ selection }),
   clear: () => set({ selection: emptySelection() }),
+  clearFilters: () =>
+    set((s) => ({
+      selection: { ...s.selection, cetasika: [], kicca: [], psLink: [], puggala: [], bhumi: [] },
+    })),
   dismissNotice: () => set({ notice: null }),
 }));

@@ -10,21 +10,23 @@ import { NAV } from './nav';
 import { SearchBox } from './SearchBox';
 import { PresenterToggle, ThemeToggle } from './Toggles';
 
+const WHEEL_TIPS =
+  'M29.34 11.67L32 4L34.66 11.67ZM44.49 15.75L51.8 12.2L48.25 19.51ZM52.33 29.34L60 32L52.33 34.66ZM48.25 44.49L51.8 51.8L44.49 48.25ZM34.66 52.33L32 60L29.34 52.33ZM19.51 48.25L12.2 51.8L15.75 44.49ZM11.67 34.66L4 32L11.67 29.34ZM15.75 19.51L12.2 12.2L19.51 15.75Z';
+const WHEEL_SPOKES =
+  'M32 25L29.52 19.75L32 13.5L34.48 19.75ZM36.95 27.05L38.91 21.58L45.08 18.92L42.42 25.09ZM39 32L44.25 29.52L50.5 32L44.25 34.48ZM36.95 36.95L42.42 38.91L45.08 45.08L38.91 42.42ZM32 39L34.48 44.25L32 50.5L29.52 44.25ZM27.05 36.95L25.09 42.42L18.92 45.08L21.58 38.91ZM25 32L19.75 34.48L13.5 32L19.75 29.52ZM27.05 27.05L21.58 25.09L18.92 18.92L25.09 21.58Z';
+
+/** Dharma-wheel mark; same geometry as src/app/icon.svg, coloured from theme tokens. */
 function DharmaWheelIcon() {
   return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 36 36"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      aria-hidden="true"
-      className="shrink-0 text-accent"
-    >
-      <circle cx="18" cy="18" r="15" />
-      <circle cx="18" cy="18" r="4" />
-      <path d="M18 3v11M18 22v11M3 18h11M22 18h11M7.4 7.4l7.8 7.8M20.8 20.8l7.8 7.8M28.6 7.4l-7.8 7.8M15.2 20.8l-7.8 7.8" />
+    <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true" className="shrink-0">
+      <rect width="64" height="64" rx="14" fill="var(--color-accent)" />
+      <g fill="var(--color-surface)">
+        <path d={WHEEL_TIPS} />
+        <path d={WHEEL_SPOKES} />
+        <circle cx="32" cy="32" r="6.5" />
+      </g>
+      <circle cx="32" cy="32" r="19" fill="none" stroke="var(--color-surface)" strokeWidth="4" />
+      <circle cx="32" cy="32" r="3" fill="var(--color-accent)" />
     </svg>
   );
 }
@@ -48,7 +50,7 @@ export function TopBar() {
         <div className="flex items-center gap-3">
           <DharmaWheelIcon />
           <div className="flex flex-col leading-tight">
-            <h1 className="font-display text-xl font-extrabold md:text-2xl">චිත්ත දර්ශකය</h1>
+            <h1 className="font-display text-xl font-extrabold md:text-2xl">පරමාර්ථ ධර්ම</h1>
             <span className="hidden text-xs text-muted md:block">අභිධර්මයේ සිත් 89 හා සම්බන්ධතා</span>
           </div>
         </div>
