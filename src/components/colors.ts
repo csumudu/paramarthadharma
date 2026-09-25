@@ -23,7 +23,7 @@ export const CATEGORY_TONE: Record<Category, string> = {
 export const BAND_HEADER_CLASSES: Record<Band, string> = {
   annasamana: 'bg-band-annasamana text-white',
   akusala: 'bg-band-akusala text-white',
-  sobhana: 'bg-band-sobhana text-black',
+  sobhana: 'bg-band-sobhana text-white',
 };
 
 export type ChipTone = Band | 'neutral';
