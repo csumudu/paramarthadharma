@@ -216,3 +216,20 @@ for (const [group, jati, word] of [
 
 export const CITTAS: Citta[] = drafts.map((d, i) => ({ id: i + 1, ...d }));
 export const cittaById = new Map<number, Citta>(CITTAS.map((c) => [c.id, c]));
+
+/** Sinhala labels for `Jati`, used in the profile header's tag pills (e.g. "ලෝභමූල සිත් · අකුසල"). */
+export const JATI_LABELS: Record<Jati, string> = {
+  akusala: 'අකුසල',
+  kusala: 'කුසල',
+  vipaka: 'විපාක',
+  kiriya: 'ක්‍රියා',
+};
+
+/** Sinhala labels for `Vedana` (without the "සහගත" suffix baked into `nameSi`). */
+export const VEDANA_LABELS: Record<Vedana, string> = {
+  somanassa: 'සෝමනස්ස',
+  domanassa: 'දෝමනස්ස',
+  upekkha: 'උපේක්ෂා',
+  sukha: 'සුඛ',
+  dukkha: 'දුක්ඛ',
+};

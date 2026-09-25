@@ -50,7 +50,7 @@ export function TopBar() {
         <div className="flex items-center gap-3">
           <DharmaWheelIcon />
           <div className="flex flex-col leading-tight">
-            <h1 className="font-display text-xl font-extrabold md:text-2xl">චිත්ත දර්ශකය</h1>
+            <h1 className="font-display text-xl font-extrabold md:text-2xl">පරමාර්ථ ධර්ම</h1>
             <span className="hidden text-xs text-muted md:block">අභිධර්මයේ සිත් 89 හා සම්බන්ධතා</span>
           </div>
         </div>

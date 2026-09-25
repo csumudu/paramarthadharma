@@ -1,7 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { BAND_HEADER_CLASSES, CATEGORY_CLASSES, chipToneClass } from './colors';
+import {
+  ACCENT_FILL_CLASS,
+  BAND_HEADER_CLASSES,
+  CATEGORY_CLASSES,
+  FILTER_BANNER_CLASS,
+  TAG_PILL_CLASS,
+  chipToneClass,
+} from './colors';
 
 /**
  * Guards WCAG contrast (≥ 4.5:1) for every fill/text pair `CATEGORY_CLASSES` and
@@ -84,6 +91,10 @@ describe('fill/text contrast (WCAG ≥ 4.5:1)', () => {
     ...(['annasamana', 'akusala', 'sobhana', 'neutral'] as const).flatMap((tone) =>
       (['selected', 'niyata'] as const).map((state) => [`chip:${tone}:${state}`, chipToneClass(tone, state)] as const),
     ),
+    // D2: profile-header tag pills, the filter banner and vīthi step-card / count-ring accent fill.
+    ['tagPill', TAG_PILL_CLASS] as const,
+    ['filterBanner', FILTER_BANNER_CLASS] as const,
+    ['accentFill', ACCENT_FILL_CLASS] as const,
   ];
 
   it('reads the real dark block, not the light tokens', () => {

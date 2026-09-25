@@ -36,4 +36,10 @@ describe('useSelection store', () => {
     useSelection.getState().dismissNotice();
     expect(useSelection.getState().notice).toBeNull();
   });
+
+  it('clears filters but keeps the citta selection', () => {
+    useSelection.setState({ selection: { ...emptySelection(), citta: [3], cetasika: [12], puggala: ['arahant'] } });
+    useSelection.getState().clearFilters();
+    expect(useSelection.getState().selection).toEqual({ ...emptySelection(), citta: [3] });
+  });
 });

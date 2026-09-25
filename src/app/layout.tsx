@@ -17,7 +17,8 @@ const abhaya = Abhaya_Libre({
 });
 
 export const metadata: Metadata = {
-  title: 'චිත්ත දර්ශකය',
+  title: { default: 'පරමාර්ථ ධර්ම', template: '%s · පරමාර්ථ ධර්ම' },
+  applicationName: 'පරමාර්ථ ධර්ම',
   description: 'සිත් 89 හා චෛතසික, කෘත්‍ය, පටිච්චසමුප්පාද, පුද්ගල හා භූමි සම්බන්ධතා',
 };
 

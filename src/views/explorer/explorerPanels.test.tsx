@@ -46,4 +46,43 @@ describe('ExplorerView', () => {
     expect(within(chain).getAllByRole('listitem')).toHaveLength(11);
     expect(within(chain).getByText('තණ්හා පච්චයා උපාදාන')).toHaveAttribute('data-state', 'off');
   });
+
+  it('renders an SVG count ring alongside the "n / 52" text for the selected citta', async () => {
+    const user = userEvent.setup();
+    render(<ExplorerView />);
+    await user.click(within(screen.getByTestId('citta-map')).getByRole('button', { name: /^1\. / }));
+    const panel = aside();
+    expect(within(panel).getByText('19 / 52')).toBeInTheDocument();
+    const ring = panel.querySelector('svg[viewBox="0 0 72 72"]');
+    expect(ring).toBeTruthy();
+    expect(ring?.querySelectorAll('circle')).toHaveLength(2);
+  });
+
+  it('groups the five sense kiccas into one vīthi step-4 card, each individually clickable', async () => {
+    const user = userEvent.setup();
+    render(<ExplorerView />);
+    await user.click(within(screen.getByTestId('citta-map')).getByRole('button', { name: /^1\. / }));
+    const strip = within(aside()).getByTestId('vithi-strip');
+    for (const name of ['දස්සන', 'සවන', 'ඝායන', 'සායන', 'ඵුසන']) {
+      expect(within(strip).getByRole('button', { name })).toBeInTheDocument();
+    }
+    expect(within(strip).getByRole('button', { name: 'ජවන' })).toHaveAttribute('data-state', 'on');
+  });
+
+  it('shows a filter banner whose "ඉවත් කරන්න" button clears filters but keeps a selected citta', async () => {
+    const user = userEvent.setup();
+    render(<ExplorerView />);
+    await user.click(within(screen.getByTestId('citta-map')).getByRole('button', { name: /^1\. / }));
+    await user.keyboard('{Shift>}');
+    await user.click(within(aside()).getByRole('button', { name: 'පීති' }));
+    await user.keyboard('{/Shift}');
+    expect(within(aside()).getByText('පීති: සිත් 35')).toBeInTheDocument();
+
+    await user.click(within(aside()).getByRole('button', { name: 'ඉවත් කරන්න' }));
+
+    expect(useSelection.getState().selection.cetasika).toEqual([]);
+    expect(useSelection.getState().selection.citta).toEqual([1]);
+    expect(within(aside()).queryByText('පීති: සිත් 35')).not.toBeInTheDocument();
+    expect(within(aside()).getByText('19 / 52')).toBeInTheDocument();
+  });
 });

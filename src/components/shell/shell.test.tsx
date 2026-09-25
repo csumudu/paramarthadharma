@@ -11,7 +11,7 @@ afterEach(() => window.history.replaceState(null, '', '/'));
 describe('AppShell', () => {
   it('shows the Sinhala title and the four views', () => {
     render(<AppShell>content</AppShell>);
-    expect(screen.getByRole('heading', { name: 'චිත්ත දර්ශකය' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'පරමාර්ථ ධර්ම' })).toBeInTheDocument();
     const nav = screen.getByRole('navigation', { name: 'දර්ශන' });
     expect(within(nav).getAllByRole('link').map((a) => a.textContent)).toEqual([
       'ගවේෂකය',
