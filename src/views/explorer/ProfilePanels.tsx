@@ -109,10 +109,14 @@ function CittaHeader({ citta, profile }: { citta: Citta; profile: CittaProfile }
             className="stroke-accent"
           />
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center leading-none">
+        {/* Decorative: two differently-sized lines, duplicated by the sr-only span below so the
+            combined "n / 52" text stays queryable as a single node (RTL's getByText only concatenates
+            an element's own direct text-node children, not text split across nested elements). */}
+        <div aria-hidden className="absolute inset-0 flex flex-col items-center justify-center leading-none">
           <span className="font-display text-xl font-extrabold">{count}</span>
-          <span className="text-[10px] text-muted"> / 52</span>
+          <span className="text-[10px] text-muted">/ 52</span>
         </div>
+        <span className="sr-only">{count} / 52</span>
       </div>
     </div>
   );
