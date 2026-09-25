@@ -35,6 +35,29 @@ describe('CittaMap', () => {
       expect(b.className).not.toMatch(/\btruncate\b/);
     }
   });
+
+  it('renders the four sphere headings and, inside the kāma card, the three row labels', () => {
+    render(<CittaMap />);
+    const map = screen.getByTestId('citta-map');
+    for (const name of ['කාමාවචර', 'රූපාවචර', 'අරූපාවචර', 'ලෝකෝත්තර']) {
+      expect(within(map).getByRole('heading', { level: 2, name })).toBeInTheDocument();
+    }
+    const kamaHeading = within(map).getByRole('heading', { level: 2, name: 'කාමාවචර' });
+    const kamaCard = kamaHeading.closest('section');
+    if (!kamaCard) throw new Error('kāma card section not found');
+    for (const label of ['අකුසල', 'අහේතුක', 'සෝභන']) {
+      expect(within(kamaCard as HTMLElement).getByText(label)).toBeInTheDocument();
+    }
+  });
+
+  it('renders tiles in citta id order 1..89 in the DOM', () => {
+    render(<CittaMap />);
+    const map = screen.getByTestId('citta-map');
+    const ids = within(map)
+      .getAllByRole('button')
+      .map((b) => Number(b.getAttribute('aria-label')!.split('.')[0]));
+    expect(ids).toEqual(Array.from({ length: 89 }, (_, i) => i + 1));
+  });
 });
 
 describe('CittaList (phone)', () => {

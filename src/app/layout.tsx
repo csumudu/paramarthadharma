@@ -11,7 +11,7 @@ const noto = Noto_Sans_Sinhala({
 
 const abhaya = Abhaya_Libre({
   subsets: ['sinhala'],
-  weight: ['400', '700'],
+  weight: ['500', '700', '800'],
   variable: '--font-abhaya',
   display: 'swap',
 });

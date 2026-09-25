@@ -9,8 +9,8 @@ import { useSelection } from '@/state/selection';
 import type { TileState } from './tileState';
 
 const STATE_CLASSES: Record<TileState, string> = {
-  selected: 'z-10 ring-4 ring-fg ring-offset-2 ring-offset-bg',
-  match: 'z-10 ring-2 ring-fg',
+  selected: 'z-10 ring-2 ring-fg ring-offset-[3px] ring-offset-bg',
+  match: 'z-10 ring-2 ring-accent ring-offset-2 ring-offset-bg',
   dim: '',
   normal: '',
 };
@@ -41,13 +41,13 @@ export function TileButton({
       aria-pressed={state === 'selected'}
       aria-label={`${citta.id}. ${citta.nameSi}`}
       title={citta.nameSi}
-      animate={{ opacity: state === 'dim' ? 0.22 : 1, scale: state === 'match' ? 1.04 : 1 }}
+      animate={{ opacity: state === 'dim' ? 0.22 : 1, scale: state === 'selected' ? 1.06 : 1 }}
       transition={{ duration: 0.2 }}
       style={style}
-      className={`flex min-h-11 flex-col items-center justify-center overflow-hidden rounded-md p-1 text-center leading-tight break-words ${CATEGORY_CLASSES[category]} ${STATE_CLASSES[state]} ${className}`}
+      className={`flex min-h-12 min-w-11 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-lg p-1 text-center leading-tight break-words ${CATEGORY_CLASSES[category]} ${STATE_CLASSES[state]} ${className}`}
     >
-      <span className="text-xs font-bold opacity-80">{citta.id}</span>
-      <span className="text-[0.78rem]">{citta.short}</span>
+      <span className="font-display text-[15px] font-extrabold leading-none">{citta.id}</span>
+      <span className="text-[10px] leading-tight">{citta.short}</span>
     </motion.button>
   );
 }

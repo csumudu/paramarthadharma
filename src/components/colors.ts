@@ -7,7 +7,7 @@ export const CATEGORY_CLASSES: Record<Category, string> = {
   'kama-sobhana': 'bg-kama-sobhana text-white',
   rupa: 'bg-rupa text-white',
   arupa: 'bg-arupa text-white',
-  lokuttara: 'bg-lokuttara text-black',
+  lokuttara: 'bg-lokuttara text-white',
 };
 
 /** CSS variable suffix (`--color-<tone>`) for inline styles (React Flow nodes). */
@@ -32,26 +32,26 @@ export type ChipState = 'selected' | 'niyata' | 'aniyata' | 'on' | 'off';
 const SOLID: Record<ChipTone, string> = {
   annasamana: 'bg-band-annasamana border-band-annasamana text-white',
   akusala: 'bg-band-akusala border-band-akusala text-white',
-  sobhana: 'bg-band-sobhana border-band-sobhana text-black',
+  sobhana: 'bg-band-sobhana border-band-sobhana text-white',
   neutral: 'bg-fg border-fg text-bg',
 };
 const OUTLINE: Record<ChipTone, string> = {
-  annasamana: 'border-band-annasamana bg-transparent',
-  akusala: 'border-band-akusala bg-transparent',
-  sobhana: 'border-band-sobhana bg-transparent',
-  neutral: 'border-fg bg-transparent',
+  annasamana: 'border-dashed border-band-annasamana bg-surface text-band-annasamana',
+  akusala: 'border-dashed border-band-akusala bg-surface text-band-akusala',
+  sobhana: 'border-dashed border-band-sobhana bg-surface text-band-sobhana',
+  neutral: 'border-dashed border-fg bg-surface text-fg',
 };
 
 export function chipToneClass(tone: ChipTone, state: ChipState): string {
   switch (state) {
     case 'selected':
-      return `${SOLID[tone]} ring-4 ring-fg ring-offset-2 ring-offset-bg`;
+      return 'bg-accent border-accent text-white ring-2 ring-accent ring-offset-2 ring-offset-bg';
     case 'niyata':
     case 'on':
       return SOLID[tone];
     case 'aniyata':
       return OUTLINE[tone];
     default:
-      return 'border-line text-muted bg-transparent';
+      return 'border-line text-faint bg-transparent';
   }
 }

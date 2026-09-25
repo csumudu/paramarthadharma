@@ -6,32 +6,57 @@
   --font-sans: var(--font-noto-sinhala), "Noto Sans Sinhala", system-ui, sans-serif;
   --font-display: var(--font-abhaya), "Abhaya Libre", serif;
 
-  --color-akusala: #d64545;
-  --color-ahetuka: #e3c23a;
-  --color-kama-sobhana: #5a9e3f;
-  --color-rupa: #2f8f9d;
-  --color-arupa: #6d5bd0;
-  --color-lokuttara: #c7881c;
+  --color-akusala: #a3342b;
+  --color-ahetuka: #e3b53f;
+  --color-kama-sobhana: #3f7a3a;
+  --color-rupa: #2a6b72;
+  --color-arupa: #4b4a8f;
+  --color-lokuttara: #7a5a14;
 
-  --color-band-annasamana: #2f8fb8;
-  --color-band-akusala: #d64545;
-  --color-band-sobhana: #7fb24f;
+  --color-band-annasamana: #2f5e7e;
+  --color-band-akusala: #a3342b;
+  --color-band-sobhana: #3f6f2a;
 
-  --color-bg: #fbfaf7;
-  --color-surface: #ffffff;
-  --color-fg: #1c1b19;
-  --color-muted: #6b6760;
-  --color-line: #e2ded6;
-  --color-hover: #fff3c4;
+  --color-bg: #f5efe3;
+  --color-surface: #fffcf6;
+  --color-surface-2: #f1e9da;
+  --color-fg: #221c15;
+  --color-fg-2: #3b3228;
+  --color-muted: #6b6256;
+  --color-faint: #9c9284;
+  --color-line: #e3d9c6;
+  --color-line-strong: #d8ccb6;
+  --color-hover: #fbebd7;
+  --color-accent: #b4541b;
+  --color-accent-soft: #f9e7d6;
+  --color-accent-ink: #5a2a0c;
 }
 
 [data-theme="dark"] {
-  --color-bg: #121212;
-  --color-surface: #1d1d1f;
-  --color-fg: #f2efe8;
-  --color-muted: #a39e94;
-  --color-line: #34322e;
-  --color-hover: #3a3420;
+  --color-akusala: #c2473b;
+  --color-ahetuka: #d9a92f;
+  --color-kama-sobhana: #4c8a45;
+  --color-rupa: #34828a;
+  --color-arupa: #5e5ca8;
+  --color-lokuttara: #a07a22;
+
+  --color-band-annasamana: #3e78a0;
+  --color-band-akusala: #c2473b;
+  --color-band-sobhana: #4f8a38;
+
+  --color-bg: #14110d;
+  --color-surface: #1e1a15;
+  --color-surface-2: #2a241d;
+  --color-fg: #f1eadc;
+  --color-fg-2: #cfc5b4;
+  --color-muted: #a89e8e;
+  --color-faint: #7d7466;
+  --color-line: #3a332a;
+  --color-line-strong: #4a4238;
+  --color-hover: #3a2a1c;
+  --color-accent: #f08c6b;
+  --color-accent-soft: #3a2418;
+  --color-accent-ink: #f6c9a2;
   color-scheme: dark;
 }
 
