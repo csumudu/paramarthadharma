@@ -45,7 +45,7 @@ const OUTLINE: Record<ChipTone, string> = {
 export function chipToneClass(tone: ChipTone, state: ChipState): string {
   switch (state) {
     case 'selected':
-      return 'bg-accent border-accent text-white ring-2 ring-accent ring-offset-2 ring-offset-bg';
+      return 'bg-accent border-accent text-surface ring-2 ring-accent ring-offset-2 ring-offset-bg';
     case 'niyata':
     case 'on':
       return SOLID[tone];

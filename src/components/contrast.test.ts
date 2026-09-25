@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { BAND_HEADER_CLASSES, CATEGORY_CLASSES } from './colors';
+import { BAND_HEADER_CLASSES, CATEGORY_CLASSES, chipToneClass } from './colors';
 
 /**
  * Guards WCAG contrast (≥ 4.5:1) for every fill/text pair `CATEGORY_CLASSES` and
@@ -40,12 +40,15 @@ function parseColorTokens(blockBody: string): Record<string, string> {
   return tokens;
 }
 
+/**
+ * Body of the top-level rule whose selector starts a line and is followed by `{` — so a mention of
+ * the selector elsewhere (e.g. inside `@custom-variant dark (...)`) is not mistaken for the rule.
+ */
 function extractBlock(css: string, selector: string): string {
-  const start = css.indexOf(selector);
-  if (start === -1) throw new Error(`Selector not found in globals.css: ${selector}`);
-  const braceStart = css.indexOf('{', start);
-  const braceEnd = css.indexOf('}', braceStart);
-  return css.slice(braceStart + 1, braceEnd);
+  const start = css.split('\n').findIndex((line) => line.startsWith(`${selector} {`));
+  if (start === -1) throw new Error(`Rule not found in globals.css: ${selector} { ... }`);
+  const rest = css.split('\n').slice(start).join('\n');
+  return rest.slice(rest.indexOf('{') + 1, rest.indexOf('}'));
 }
 
 const css = readFileSync(join(__dirname, '../app/globals.css'), 'utf8');
@@ -53,35 +56,52 @@ const lightTokens = parseColorTokens(extractBlock(css, '@theme'));
 const darkOverrides = parseColorTokens(extractBlock(css, '[data-theme="dark"]'));
 const darkTokens = { ...lightTokens, ...darkOverrides };
 
+/** `bg-x text-y` where y is a colour token or white/black. */
+function textColour(token: string, tokens: Record<string, string>): string {
+  if (token === 'white') return WHITE;
+  if (token === 'black') return BLACK;
+  const hex = tokens[token];
+  if (!hex) throw new Error(`no token for --color-${token}`);
+  return hex;
+}
+
 const WHITE = '#ffffff';
 const BLACK = '#000000';
 
-/** `"bg-akusala text-white"` -> { token: "akusala", text: "#ffffff" }. */
+/** `"bg-akusala text-white"` -> { token: "akusala", text: "white" }. */
 function parseFillTextPair(classString: string): { token: string; text: string } {
   const bgMatch = classString.match(/\bbg-([a-z0-9-]+)\b/);
   if (!bgMatch) throw new Error(`No bg-* class found in "${classString}"`);
-  const text = classString.includes('text-white') ? WHITE : classString.includes('text-black') ? BLACK : null;
-  if (!text) throw new Error(`No text-white/text-black class found in "${classString}"`);
-  return { token: bgMatch[1], text };
+  const textMatch = classString.match(/\btext-([a-z0-9-]+)\b/);
+  if (!textMatch) throw new Error(`No text-* class found in "${classString}"`);
+  return { token: bgMatch[1], text: textMatch[1] };
 }
 
 describe('fill/text contrast (WCAG ≥ 4.5:1)', () => {
   const cases = [
     ...Object.entries(CATEGORY_CLASSES).map(([name, cls]) => [`category:${name}`, cls] as const),
     ...Object.entries(BAND_HEADER_CLASSES).map(([name, cls]) => [`band:${name}`, cls] as const),
+    ...(['annasamana', 'akusala', 'sobhana', 'neutral'] as const).flatMap((tone) =>
+      (['selected', 'niyata'] as const).map((state) => [`chip:${tone}:${state}`, chipToneClass(tone, state)] as const),
+    ),
   ];
+
+  it('reads the real dark block, not the light tokens', () => {
+    expect(darkOverrides.bg).toBeDefined();
+    expect(darkOverrides.bg).not.toBe(lightTokens.bg);
+  });
 
   it.each(cases)('%s meets 4.5:1 in the light theme', (_label, cls) => {
     const { token, text } = parseFillTextPair(cls);
     const fill = lightTokens[token];
     expect(fill, `no light token for --color-${token}`).toBeDefined();
-    expect(contrastRatio(fill, text)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(fill, textColour(text, lightTokens))).toBeGreaterThanOrEqual(4.5);
   });
 
   it.each(cases)('%s meets 4.5:1 in the dark theme', (_label, cls) => {
     const { token, text } = parseFillTextPair(cls);
     const fill = darkTokens[token];
     expect(fill, `no dark token for --color-${token}`).toBeDefined();
-    expect(contrastRatio(fill, text)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(fill, textColour(text, darkTokens))).toBeGreaterThanOrEqual(4.5);
   });
 });
