@@ -33,8 +33,8 @@ export const useUi = create<UiState>((set, get) => ({
   presenter: false,
   hydrate: () => {
     const stored = safeGet('theme');
-    const prefersDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme: Theme = stored === 'dark' || stored === 'light' ? stored : prefersDark ? 'dark' : 'light';
+    // Light is the default; dark only when the user chose it with the toggle.
+    const theme: Theme = stored === 'dark' ? 'dark' : 'light';
     set({ theme, presenter: safeGet('presenter') === 'on' });
   },
   toggleTheme: () => {

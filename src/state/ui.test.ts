@@ -23,6 +23,15 @@ describe('useUi', () => {
     localStorage.clear();
   });
 
+  it('defaults to light even when the OS prefers dark', () => {
+    vi.spyOn(window, 'matchMedia').mockImplementation(
+      (query) => ({ matches: query.includes('dark'), media: query }) as MediaQueryList,
+    );
+    useUi.setState({ theme: 'dark' });
+    useUi.getState().hydrate();
+    expect(useUi.getState().theme).toBe('light');
+  });
+
   it('keeps working when storage throws (Review Focus #5)', () => {
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
       throw new Error('blocked');
